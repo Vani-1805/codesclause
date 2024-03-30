@@ -1,0 +1,46 @@
+import React, { useState }  from 'react';
+import './App.css';
+import Axios from 'axios';//to get API
+const KEY ='282e6ded63a04db6145ba4dd074c861b';
+const city="London";//default
+const App=()=> {
+const [city,setCity]=useState("");
+const [data,setData]=useState();
+
+  const fetchData =async() => { //to get data
+    try{// to get respnse
+      const response = await Axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${KEY}`)
+      setData(response.data);
+    }
+catch(err){//if not succsfully fetched data
+  alert("error in api call")
+}
+  }
+  return(
+    <div className='App'>
+      <h1 className='title'>Weather App</h1>
+      <div className="input-container">
+<input type="text"
+className="input"
+value={city}
+onChange={e => setCity(e.target.value)}//updated every time whn city chnge state updt
+placeholder="Enter the city Name"/>
+    <br/> <br/>
+      <button className="button" onClick={fetchData}>Fetch</button> 
+
+
+    </div>
+    <div>
+      {data && (
+        <div className='container'>
+          <h1 className='city-name'>{data.name},{data.sys.country}</h1>
+          <div className='weather-info'>
+            <div className='temp'>{(data.main.temp)} °C</div>
+          <div className='coordinates'>
+  <div>Lat - {data.coord.lat}</div>
+  <div>Lon - {data.coord.lon}</div>
+    </div>
+  </div>
+  
+</div>)}</div></div>)}
+export default App;
